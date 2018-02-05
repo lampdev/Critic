@@ -19,7 +19,7 @@ class CreatePaymentOptionsTable extends Migration
             $table->timestamps();
             $table->boolean('active');
             $table->integer('created_user_id');
-            $table->integer('updated_user_id');
+            $table->integer('updated_user_id')->default(NULL);
         });
     }
 

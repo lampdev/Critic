@@ -19,8 +19,8 @@ class CreateParametersTable extends Migration
             $table->string('type');
             $table->timestamps();
             $table->boolean('active');
-            $table->integer('created_user_id');
-            $table->integer('updated_user_id');
+            $table->integer('created_user_id')->default(1);
+            $table->integer('updated_user_id')->default(NULL);
         });
     }
 

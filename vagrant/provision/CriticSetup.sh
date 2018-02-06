@@ -19,41 +19,34 @@ apt-get install -y mysql-server mysql-client git nginx
 mysql -uroot -ppassword -e "CREATE DATABASE critic;"
 
 rm /etc/nginx/sites-available/default 2> /dev/null
-echo -e "server \n{\n listen 80 default_server;\n listen [::]:80 default_server;\n access_log /var/log/nginx/access.log combined;\n error_log /var/log/nginx/error.log error;\n index index.php index.html index.htm index.nginx-debian.html;\n server_name critic.loc www.critic.loc;\n root /var/www/laravel/blog/public;\n location / {\n " > /etc/nginx/sites-available/critic.loc.conf
+echo -e "server \n{\n listen 80 default_server;\n listen [::]:80 default_server;\n access_log /var/log/nginx/access.log combined;\n error_log /var/log/nginx/error.log error;\n index index.php index.html index.htm index.nginx-debian.html;\n server_name critic.loc www.critic.loc;\n root /var/www/Critic/public;\n location / {\n " > /etc/nginx/sites-available/critic.loc.conf
 echo 'try_files $uri $uri/ /index.php$is_args$args;' >> /etc/nginx/sites-available/critic.loc.conf
 echo -e "\n	}\n" >> /etc/nginx/sites-available/critic.loc.conf
 echo -e '   #   Обрабатываем PHP скрипты.\n  location ~ \.php$ {\n    #root /var/www/laravel/public;\n   proxy_read_timeout 61;\n  fastcgi_read_timeout 61;\n  try_files $uri $uri/ =404;\n     #   Путь до сокета демона PHP-FPM\n fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;\n    fastcgi_index index.php;\n    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n   include fastcgi_params;\n }\n\n}' >> /etc/nginx/sites-available/critic.loc.conf
 ln -s /etc/nginx/sites-available/critic.loc.conf /etc/nginx/sites-enabled/
 nginx -s reload
 
+cd /var/www/
+git clone https://github.com/gderiyenko/Critic.git
 
-apt-get install -y curl php-cli php-mbstring git unzip 
+apt-get install -y curl php-cli php-mbstring unzip 
 
 apt-get install -y php-xml
 
 curl -sS https://getcomposer.org/installer -o composer-setup.php 
 apt install -y composer 
 
-cd /var/www/laravel
-composer global require "laravel/installer=~1.1" 
-composer create-project --prefer-dist laravel/laravel blog "5.5.*" 
 
 composer update --no-scripts  
-cd /var/www/laravel/blog
+cd /var/www/Critic
 composer dump-autoload
-
-cd /var/www/laravel/blog/vendor
-composer du
-php artisan key:generate
-php artisan config:clear
-apt-get install putty-tools
 
 # connection database
 echo -e "\n KexAlgorithms diffie-hellman-group1-sha1,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1" | sudo tee --append /etc/ssh/sshd_config
 echo -e "\n Ciphers 3des-cbc,blowfish-cbc,aes128-cbc,aes128-ctr,aes256-ctr" | sudo tee --append /etc/ssh/sshd_config
 service ssh restart
 
-cd /var/www/laravel/blog/
+cd /var/www/Critic/
 mv .env.example .env
 php artisan migrate:install
 composer update --no-scripts
@@ -61,13 +54,24 @@ composer update --no-scripts
 php artisan key:generate
 apt-get install -y php-mysql
 
-apt-get -y purge nodejs 
+#apt-get -y purge nodejs 
 #npm
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-apt-get install -y nodejs
-#npm install --save-dev cross-env --no-bin-links
-#npm install --global cross-env --no-bin-links
+#curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+#apt-get install -y nodejs
+
+cd /var/www/Critic/
+composer update
+cd /var/www/Critic/
+#node npm 
+sudo apt-get purge --auto-remove -y nodejs
+sudo apt-get autoremove
+sudo apt-get -y install nodejs
+sudo npm install --no-bin-links
+sudo npm install --global cross-env 
+rm package-lock.json
+
+php artisan migrate:rollback
+php artisan migrate
+php artisan db:seed
 
 
-#delete node_modules folred
-#npm install --no-bin-links

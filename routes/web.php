@@ -10,7 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('profile', function () {
+    // Only authenticated users may enter...
+})->middleware('auth');
+Route::get('admin/profile', function () {
+    //
+})->middleware('auth');
 Route::get('/', function () {
     return view('welcome');
 });

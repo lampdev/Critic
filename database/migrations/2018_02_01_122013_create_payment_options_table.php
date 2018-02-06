@@ -32,4 +32,7 @@ class CreatePaymentOptionsTable extends Migration
     {
         Schema::dropIfExists('payment_options');
     }
+    public function FunctionName()
+    {
+    }
 }

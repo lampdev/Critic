@@ -1,9 +1,3 @@
-
-#after install add to  /etc/nginx/nginx.conf
-#http {
-#    . . .
-#    server_names_hash_bucket_size 64;
-# }
 apt-get purge php5-fpm mysql-server mysql-client nginx -y
 add-apt-repository ppa:ondrej/php
 apt-get update -y 2> /dev/null
@@ -21,15 +15,19 @@ mysql -uroot -ppassword -e "CREATE DATABASE critic;"
 rm /etc/nginx/sites-available/default 2> /dev/null
 echo -e "server \n{\n listen 80 default_server;\n listen [::]:80 default_server;\n access_log /var/log/nginx/access.log combined;\n error_log /var/log/nginx/error.log error;\n index index.php index.html index.htm index.nginx-debian.html;\n server_name critic.loc www.critic.loc;\n root /var/www/Critic/public;\n location / {\n " > /etc/nginx/sites-available/critic.loc.conf
 # clean cache "expires 1s";
+sed -i 's/sendfile on/sendfile off/' /etc/nginx/nginx.conf;
+sed -i 's/# server_names_hash_bucket_size 64;/ server_names_hash_bucket_size 64;/' /etc/nginx/nginx.conf
 # /etc/nginx/nginx.conf "sendfile off";
-echo 'expires 1s;\n try_files $uri $uri/ /index.php$is_args$args;' >> /etc/nginx/sites-available/critic.loc.conf
+echo -e 'expires 1s;\n try_files $uri $uri/ /index.php$is_args$args;' >> /etc/nginx/sites-available/critic.loc.conf
 echo -e "\n	}\n" >> /etc/nginx/sites-available/critic.loc.conf
-echo -e '   #   Обрабатываем PHP скрипты.\n  location ~ \.php$ {\n    #root /var/www/laravel/public;\n   proxy_read_timeout 61;\n  fastcgi_read_timeout 61;\n  try_files $uri $uri/ =404;\n     #   Путь до сокета демона PHP-FPM\n fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;\n    fastcgi_index index.php;\n    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n   include fastcgi_params;\n }\n\n}' >> /etc/nginx/sites-available/critic.loc.conf
+echo -e '   #  PHP scripts options.\n  location ~ \.php$ {\n    #root /var/www/laravel/public;\n   proxy_read_timeout 61;\n  fastcgi_read_timeout 61;\n  try_files $uri $uri/ =404;\n     # PHP-FPM\n fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;\n    fastcgi_index index.php;\n    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n   include fastcgi_params;\n }\n\n}' >> /etc/nginx/sites-available/critic.loc.conf
 ln -s /etc/nginx/sites-available/critic.loc.conf /etc/nginx/sites-enabled/
 nginx -s reload
 
 cd /var/www/
 git clone https://github.com/gderiyenko/Critic.git
+
+cp /var/www/.env /var/www/Critic
 
 apt-get install -y curl php-cli php-mbstring unzip 
 
@@ -43,11 +41,6 @@ composer update --no-scripts
 cd /var/www/Critic
 composer dump-autoload
 
-# connection database
-echo -e "\n KexAlgorithms diffie-hellman-group1-sha1,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1" | sudo tee --append /etc/ssh/sshd_config
-echo -e "\n Ciphers 3des-cbc,blowfish-cbc,aes128-cbc,aes128-ctr,aes256-ctr" | sudo tee --append /etc/ssh/sshd_config
-service ssh restart
-
 cd /var/www/Critic/
 mv .env.example .env
 php artisan migrate:install
@@ -56,21 +49,16 @@ composer update --no-scripts
 php artisan key:generate
 apt-get install -y php-mysql
 
-#comments
-#apt-get -y purge nodejs 
-#npm
-#curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-#apt-get install -y nodejs
-
 cd /var/www/Critic/
 composer update
 cd /var/www/Critic/
-#node npm 
- apt-get purge --auto-remove -y nodejs
- apt-get autoremove
- apt-get -y install nodejs
- npm install --no-bin-links
- npm install --global cross-env 
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+apt-get install -y nodejs
+apt-get install -y npm
+
+npm install --global cross-env 
+npm install --no-bin-links
 rm package-lock.json
 
 php artisan migrate:rollback

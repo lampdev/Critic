@@ -20,7 +20,9 @@ mysql -uroot -ppassword -e "CREATE DATABASE critic;"
 
 rm /etc/nginx/sites-available/default 2> /dev/null
 echo -e "server \n{\n listen 80 default_server;\n listen [::]:80 default_server;\n access_log /var/log/nginx/access.log combined;\n error_log /var/log/nginx/error.log error;\n index index.php index.html index.htm index.nginx-debian.html;\n server_name critic.loc www.critic.loc;\n root /var/www/Critic/public;\n location / {\n " > /etc/nginx/sites-available/critic.loc.conf
-echo 'try_files $uri $uri/ /index.php$is_args$args;' >> /etc/nginx/sites-available/critic.loc.conf
+# clean cache "expires 1s";
+# /etc/nginx/nginx.conf "sendfile off";
+echo 'expires 1s;\n try_files $uri $uri/ /index.php$is_args$args;' >> /etc/nginx/sites-available/critic.loc.conf
 echo -e "\n	}\n" >> /etc/nginx/sites-available/critic.loc.conf
 echo -e '   #   Обрабатываем PHP скрипты.\n  location ~ \.php$ {\n    #root /var/www/laravel/public;\n   proxy_read_timeout 61;\n  fastcgi_read_timeout 61;\n  try_files $uri $uri/ =404;\n     #   Путь до сокета демона PHP-FPM\n fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;\n    fastcgi_index index.php;\n    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n   include fastcgi_params;\n }\n\n}' >> /etc/nginx/sites-available/critic.loc.conf
 ln -s /etc/nginx/sites-available/critic.loc.conf /etc/nginx/sites-enabled/
@@ -54,6 +56,7 @@ composer update --no-scripts
 php artisan key:generate
 apt-get install -y php-mysql
 
+#comments
 #apt-get -y purge nodejs 
 #npm
 #curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
@@ -63,15 +66,24 @@ cd /var/www/Critic/
 composer update
 cd /var/www/Critic/
 #node npm 
-sudo apt-get purge --auto-remove -y nodejs
-sudo apt-get autoremove
-sudo apt-get -y install nodejs
-sudo npm install --no-bin-links
-sudo npm install --global cross-env 
+ apt-get purge --auto-remove -y nodejs
+ apt-get autoremove
+ apt-get -y install nodejs
+ npm install --no-bin-links
+ npm install --global cross-env 
 rm package-lock.json
 
 php artisan migrate:rollback
 php artisan migrate
 php artisan db:seed
+#How to install bootstrap 4 Tutorial
+#add to  /etc/hosts
+#151.101.16.162 registry.npmjs.org
+#& after that:
+#sudo npm install bootstrap --save
 
+# sass
+# sudo npm install -g sass
+#vue
+#sudo npm install vue
 

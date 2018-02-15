@@ -11,19 +11,13 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">-->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <!-- Styles -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.2.1/dt-1.10.16/af-2.2.2/b-1.5.1/b-colvis-1.5.1/fh-3.1.3/datatables.min.css"/>
  
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.2.1/dt-1.10.16/af-2.2.2/b-1.5.1/b-colvis-1.5.1/fh-3.1.3/datatables.min.js"></script>
 
-
-        <!--Datatables
         
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>-->
-
-       
 
     </head>
 
@@ -33,8 +27,8 @@
         @yield('content')
 
         <!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
 
- <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
 

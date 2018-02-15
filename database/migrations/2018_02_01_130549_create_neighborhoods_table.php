@@ -21,9 +21,9 @@ class CreateNeighborhoodsTable extends Migration
             $table->float('latitude');
             $table->float('longitude');
             $table->timestamps();
-            $table->boolean('active');
+            $table->boolean('active')->default(0);
             $table->integer('created_user_id')->default(1);
-            $table->integer('updated_user_id')->default(NULL);
+            $table->integer('updated_user_id')->default(1);
         });
     }
 

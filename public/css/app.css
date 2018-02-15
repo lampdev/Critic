@@ -10261,6 +10261,17 @@ body {
   height: 100%;
 }
 
+td.clip {
+  white-space: nowrap;
+  width: 12em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-lg {
+  width: 80%;
+}
+
 .nbar {
   list-style-type: none;
   margin: 0;

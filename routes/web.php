@@ -20,3 +20,5 @@ Route::get('manage/locations','ManageController@locations')->middleware('auth');
 Route::get('manage/specialties','ManageController@specialties')->middleware('auth');
 Route::get('manage/payment_option','ManageController@payment_option')->middleware('auth');
 Route::get('logout', 'Auth\LoginController@logout')->middleware('auth');
+
+Route::post('manage/add-business','ManageController@add_business')->middleware('auth');

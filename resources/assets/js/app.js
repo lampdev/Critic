@@ -5,8 +5,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-
+require( 'tether' );
 require('./bootstrap');
+
+require('bootstrap');
 
 window.Vue = require('vue');
 Vue.component(

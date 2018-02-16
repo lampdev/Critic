@@ -7,30 +7,36 @@ use Illuminate\Database\Eloquent\Model;
 class Businesses extends Model
 {
     //get all visible business info for admin
-    public static function GetAll()
+    public static function getAll()
     {
-    	
-    	return \DB::select('SELECT b.name, b.description, b.type, b.active  FROM businesses b WHERE ?', [1]);
+        return \DB::table('businesses')
+            ->select('name', 'description', 'type', 'active')
+            ->get()
+            ->all();
     }
     // add one business
-    public static function Add($name, $type, $description, $wto, $wtoDescription, $pricing, $website, $glutenFree, $gfDescription)
+    public static function addOne($name, $type, $description, $wto, $wtoDescription, $pricing, $website, $glutenFree, $gfDescription)
     {
     	// add values to businesses table
         $date = new \DateTime();
         \DB::table('businesses')->insertGetId([
-             'name' => $name,
-             'type' => $type,
-             'description' => $description,
-             'what_to_order' => $wto,
-             'what_to_order_description' => $wtoDescription,
-             'created_at' => $date->format('Y-m-d H:i:s'),
-             'updated_at' => $date->format('Y-m-d H:i:s'),
-             'active' => 0,
-             'created_user_id' => 1,
-             'updated_user_id' => 1
+            'name' => $name,
+            'type' => $type,
+            'description' => $description,
+            'what_to_order' => $wto,
+            'what_to_order_description' => $wtoDescription,
+            'created_at' => $date->format('Y-m-d H:i:s'),
+            'updated_at' => $date->format('Y-m-d H:i:s'),
+            'active' => 0,
+            'created_user_id' => 1,
+            'updated_user_id' => 1
         ]);
         // preparing for adding values to business_parameter_value
-        $thisBusiness = \DB::select('SELECT id FROM businesses b WHERE (b.name = ?) and (b.created_at = ?);', [$name, $date->format('Y-m-d H:i:s')]);
+        $thisBusiness = \DB::select('id')
+            ->from('businesses as b')
+            ->where('b.name', '=', $name)
+            ->where('b.created_at', '=', $date->format('Y-m-d H:i:s'))
+            ->get();
         $parameter[1] = $pricing;
         $parameter[2] = $website;
         $parameter[3] = $glutenFree;

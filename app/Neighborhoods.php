@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Neighborhoods extends Model
 {
-    public static function GetAll()
+    public static function getAll()
     {
-    	return \DB::select('SELECT n.name, n.city, n.state, n.active  FROM neighborhoods n WHERE ?', [1]);
+    	return \DB::table('neighborhoods')
+            ->select('name', 'city', 'state', 'active')
+            ->get();
     }
 }

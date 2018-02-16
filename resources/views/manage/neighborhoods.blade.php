@@ -4,9 +4,10 @@
 
 
   @include('layouts.navbar')
-    <div class="content" style="margin: 2% 10%">
+    <div class="content" style="margin: 60px 10%">
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddNeighborhood()" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Neighborhoods</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddNeighborhood()" 
+        style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Neighborhoods</button>
         <table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
           <thead>
               <tr>
@@ -37,7 +38,7 @@
             }
             @endphp
           </tbody>
-      </table>
+        </table>
     </div>
 
 

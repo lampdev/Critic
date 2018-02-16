@@ -17,12 +17,17 @@ body {
 .modal-lg{
 	width: 80%;
 }
-.nbar{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+.nbar {
+  width: 100%;
+  position: fixed;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  margin: 0 0 3% 0;
+  top: 0;
+  z-index: 20;
+  height: 52px;
 }
 
 li {

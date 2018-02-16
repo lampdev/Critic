@@ -16,7 +16,7 @@ class ManageController extends Controller
      */
     public function neighborhoods()
     {
-        $neighborhoods = Neighborhoods::GetAll();
+        $neighborhoods = Neighborhoods::getAll();
         return view('manage.neighborhoods',[
             'section'=>'neighborhoods',
             'neighborhoods'=>$neighborhoods
@@ -24,13 +24,13 @@ class ManageController extends Controller
     }
     public function businesses()
     {
-        $businesses = Businesses::GetAll();
+        $businesses = Businesses::getAll();
         return view('manage.businesses',[
             'section'=>'businesses',
             'businesses'=>$businesses
         ]);
     }
-    public function add_business()
+    public function addBusiness()
     {
         $businessValidator = Validator::make(
             array(
@@ -64,7 +64,7 @@ class ManageController extends Controller
             dd($messages, $failed);
         }
         if ($businessValidator->passes()){ 
-            Businesses::Add(
+            Businesses::addOne(
                 $_POST['business-name'],
                 $_POST['business-type'],
                 $_POST['business-description'],
@@ -81,19 +81,19 @@ class ManageController extends Controller
     public function locations()
     {
         return view('manage.locations',[
-            'section'=>'locations'
+            'section' => 'locations'
         ]);
     }
     public function specialties()
     {
         return view('manage.specialties',[
-            'section'=>'specialties'
+            'section' => 'specialties'
         ]);
     }
-    public function payment_options()
+    public function paymentOptions()
     {
         return view('manage.payment_options',[
-            'section'=>'payment_options'
+            'section' => 'payment_options'
         ]);
     }
 

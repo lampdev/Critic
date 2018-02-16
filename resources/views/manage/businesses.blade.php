@@ -4,7 +4,7 @@
 
 
   @include('layouts.navbar')
-    <div class="content" style="margin: 2% 10%">
+    <div class="content" style="margin: 60px 10%">
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddBusiness()" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Business</button>
         <table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
@@ -21,6 +21,9 @@
           </thead>
           
           <tbody>
+          	@php
+             for($i = 1; $i<100; $i++){
+            @endphp
             @foreach ($businesses as $business)
               <tr>
                   <td>{{ $business->name }}</td>
@@ -32,6 +35,9 @@
                   <td>Active</td>
               </tr>
             @endforeach
+            @php
+             }
+            @endphp
           </tbody>
       </table>
     </div>
@@ -66,14 +72,14 @@
               </div>
               <div class="form-group">
                 <label for="business-wto" class="form-control-label">What To Order:</label>
-	            <input type="text" class="form-control" name="business-wto">
-	          </div>
-	          <div class="form-group">
-	            <label for="business-wto-description" class="form-control-label">What To Order Description:</label>
-	            <textarea class="form-control" name="business-wto-description"></textarea>
-	          </div>
-	      	</div>
-      	    <div style="width:47%; margin: 0 1.5%">
+                <input type="text" class="form-control" name="business-wto">
+              </div>
+              <div class="form-group">
+                <label for="business-wto-description" class="form-control-label">What To Order Description:</label>
+                <textarea class="form-control" name="business-wto-description"></textarea>
+              </div>
+            </div>
+            <div style="width:47%; margin: 0 1.5%">
 	          <fieldset class="form-group">
 			    <label for="business-name" class="form-control-label">Pricing:</label>
 			      <div class="row">
@@ -146,11 +152,11 @@
     $('#table_id').DataTable( {
         "scrollX": true,
         columnDefs: [ {
-	        targets: 1,
-	        render: function ( data, type, row ) {
-	            return data.substr( 0, 29 ) +"...";
-	        }
-	    } ]
+            targets: 1,
+            render: function ( data, type, row ) {
+                return data.substr( 0, 29 );
+            }
+        } ]
     } );
 } );
 </script>

@@ -10261,23 +10261,21 @@ body {
   height: 100%;
 }
 
-td.clip {
-  white-space: nowrap;
-  width: 12em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .modal-lg {
   width: 80%;
 }
 
 .nbar {
+  width: 100%;
+  position: fixed;
   list-style-type: none;
-  margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  margin: 0 0 3% 0;
+  top: 0;
+  z-index: 20;
+  height: 52px;
 }
 
 li {

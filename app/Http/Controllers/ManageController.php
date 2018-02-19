@@ -26,23 +26,26 @@ class ManageController extends Controller
     {
         $businesses = Businesses::getAll();
         return view('manage.businesses',[
-            'section'=>'businesses',
-            'businesses'=>$businesses
+            'section' => 'businesses',
+            'businesses' => $businesses
         ]);
     }
     public function addBusiness()
     {
+        // get form request
+        $businessRequest = &$_POST;
+        // validate
         $businessValidator = Validator::make(
             array(
-                'business-name' => $_POST['business-name'],
-                'business-type' => $_POST['business-type'],
-                'business-description' => $_POST['business-description'],
-                'business-wto' => $_POST['business-wto'],
-                'business-wto-description' => $_POST['business-wto-description'],
-                'business-pricing' => $_POST['business-pricing'],
-                'business-website' => $_POST['business-website'],
-                'business-gluten-free' => $_POST['business-gluten-free'],
-                'business-gf-description' => $_POST['business-gf-description'],
+                'business-name' => $businessRequest['business-name'],
+                'business-type' => $businessRequest['business-type'],
+                'business-description' => $businessRequest['business-description'],
+                'business-wto' => $businessRequest['business-wto'],
+                'business-wto-description' => $businessRequest['business-wto-description'],
+                'business-pricing' => $businessRequest['business-pricing'],
+                'business-website' => $businessRequest['business-website'],
+                'business-gluten-free' => $businessRequest['business-gluten-free'],
+                'business-gf-description' => $businessRequest['business-gf-description'],
             ),
             array(
                 'business-name' => 'required|unique:businesses,name|max:255',
@@ -53,30 +56,34 @@ class ManageController extends Controller
                 'business-pricing' => 'required|min:1|max:4',
                 'business-website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|unique:business_parameter_value,value',
                 'business-gluten-free' => 'in:on,off',
-                'business-gf-description' => 'required',
+                'business-gf-description' => '',
             )
         );
+        
         if ($businessValidator->fails())
         {
-            echo "Validation error\n";
-            $messages = $businessValidator->messages();
-            $failed = $businessValidator->failed();
-            dd($messages, $failed);
+            //echo "Validation error\n";
+            //$messages = $businessValidator->messages();
+            ///$failed = $businessValidator->failed();
+            //dd($messages, $failed);
+            return back()
+                    ->withInput($businessRequest)
+                    ->withErrors($businessValidator->messages());
         }
         if ($businessValidator->passes()){ 
             Businesses::addOne(
-                $_POST['business-name'],
-                $_POST['business-type'],
-                $_POST['business-description'],
-                $_POST['business-wto'],
-                $_POST['business-wto-description'],
-                $_POST['business-pricing'],
-                $_POST['business-website'],
-                $_POST['business-gluten-free'],
-                $_POST['business-gf-description']
+                $businessRequest['business-name'],
+                $businessRequest['business-type'],
+                $businessRequest['business-description'],
+                $businessRequest['business-wto'],
+                $businessRequest['business-wto-description'],
+                $businessRequest['business-pricing'],
+                $businessRequest['business-website'],
+                $businessRequest['business-gluten-free'],
+                $businessRequest['business-gf-description']
             );
         }
-        return $this->businesses();
+        return redirect('manage/businesses');
     }
     public function locations()
     {

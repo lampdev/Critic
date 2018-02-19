@@ -16,6 +16,9 @@ Route::get('/logout', function (){
 	Auth::logout();
 	return redirect('/login');
 });
+Route::get('/', function (){
+	return redirect('/login');
+});
 // Manage View
 Route::get('/manage/neighborhoods','ManageController@neighborhoods')->middleware('auth');
 Route::get('/manage/businesses','ManageController@businesses')->middleware('auth');

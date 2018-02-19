@@ -2931,7 +2931,9 @@ select.form-control-lg:not([size]):not([multiple]),
 
 .form-control-success,
 .form-control-warning,
-.form-control-danger {
+.form-control-danger,
+.has-danger input,
+.has-danger textarea {
   padding-right: 2.25rem;
   background-repeat: no-repeat;
   background-position: center right 0.5625rem;
@@ -3000,7 +3002,9 @@ select.form-control-lg:not([size]):not([multiple]),
   background-color: #fdf7f7;
 }
 
-.has-danger .form-control-danger {
+.has-danger .form-control-danger,
+.has-danger input,
+.has-danger textarea {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d9534f' viewBox='-2 -2 7 7'%3E%3Cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3E%3Ccircle r='.5'/%3E%3Ccircle cx='3' r='.5'/%3E%3Ccircle cy='3' r='.5'/%3E%3Ccircle cx='3' cy='3' r='.5'/%3E%3C/svg%3E");
 }
 
@@ -10300,5 +10304,9 @@ li a:hover:not(.active) {
 
 .active {
   background-color: #4CAF50;
+}
+
+.alert {
+  padding: 0.1rem 1.25rem;
 }
 

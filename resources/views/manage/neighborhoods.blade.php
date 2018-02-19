@@ -3,43 +3,37 @@
 @section('content')
 
 
-  @include('layouts.navbar')
-    <div class="content" style="margin: 60px 10%">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddNeighborhood()" 
-        style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Neighborhoods</button>
-        <table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
-          <thead>
-              <tr>
-                  <th>Neighborhood</th>
-                  <th>City</th>
-                  <th>State</th>
-                  <th>View Map</th>
-                  <th>View Locations</th>
-                  <th>Active</th>
-              </tr>
-          </thead>
-          
-          <tbody>
-            @php
-             for($i = 1; $i<100; $i++){
-            @endphp
-            @foreach ($neighborhoods as $neighborhood)
-              <tr>
-                  <td>{{ $neighborhood->name }}</td>
-                  <td>{{ $neighborhood->city }}</td>
-                  <td>{{ $neighborhood->state }}</td>
-                  <td>View map</td>
-                  <td>View Locations</td>
-                  <td>Active</td>
-              </tr>
-            @endforeach
-            @php
-            }
-            @endphp
-          </tbody>
-        </table>
-    </div>
+@include('layouts.navbar')
+<div class="content" style="margin: 60px 10%">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddNeighborhood()" 
+  style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Neighborhoods</button>
+  <table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
+    <thead>
+      <tr>
+        <th>Neighborhood</th>
+        <th>City</th>
+        <th>State</th>
+        <th>View Map</th>
+        <th>View Locations</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @foreach ($neighborhoods as $neighborhood)
+      <tr>
+        <td>{{ $neighborhood->name }}</td>
+        <td>{{ $neighborhood->city }}</td>
+        <td>{{ $neighborhood->state }}</td>
+        <td>View map</td>
+        <td>View Locations</td>
+        <td>Active</td>
+      </tr>
+      @endforeach
+  </tbody>
+</table>
+</div>
 
 
 <!-- Modal -->
@@ -64,7 +58,7 @@
 </div>
 <script>
   function ModalAddNeighborhood(){
-      $('#myModal').modal('show');
+    $('#myModal').modal('show');
   }
 </script>
 <!--End Modal-->
@@ -72,9 +66,9 @@
 <script>
   $(document).ready(function() {
     $('#table_id').DataTable( {
-        "scrollX": true
+      "scrollX": true
     } );
-} );
+  } );
 </script>
 
 @endsection

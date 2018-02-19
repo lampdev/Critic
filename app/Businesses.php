@@ -28,31 +28,28 @@ class Businesses extends Model
             'created_at' => $date->format('Y-m-d H:i:s'),
             'updated_at' => $date->format('Y-m-d H:i:s'),
             'active' => 0,
-            'created_user_id' => 1,
-            'updated_user_id' => 1
+            'created_user_id' => \Auth::user()->id,
+            'updated_user_id' => \Auth::user()->id
         ]);
         // preparing for adding values to business_parameter_value
-        $thisBusiness = \DB::select('id')
-            ->from('businesses as b')
-            ->where('b.name', '=', $name)
-            ->where('b.created_at', '=', $date->format('Y-m-d H:i:s'))
-            ->get();
-        $parameter[1] = $pricing;
-        $parameter[2] = $website;
-        $parameter[3] = $glutenFree;
-        $parameter[4] = $gfDescription;
+        $thisBusiness = \DB::table('businesses')
+            ->where('name', '=', $name)
+            ->where('created_at', '=', $date->format('Y-m-d H:i:s'))
+            ->first();
+        // parameters for business_parameter_value
+        $parameters =[null, $pricing, $website, $glutenFree, $gfDescription];
         // adding values to business_parameter_value table
         for($i = 1; $i <= 4; $i++)
         {
             \DB::table('business_parameter_value')->insertGetId([
-                'business_id' => $thisBusiness[0]->id,
+                'business_id' => $thisBusiness->id,
                 'parameter_id' => $i,
-                'value' => $parameter[$i],
+                'value' => $parameters[$i],
                 'created_at' => $date->format('Y-m-d H:i:s'),
                 'updated_at' => $date->format('Y-m-d H:i:s'),
                 'active' => 1,
-                'created_user_id' => 1,
-                'updated_user_id' => 1
+                'created_user_id' => \Auth::user()->id,
+                'updated_user_id' => \Auth::user()->id
             ]);
         }
     }

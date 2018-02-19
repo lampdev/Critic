@@ -1,65 +1,65 @@
 @extends('layouts.head')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+<style type="text/css">
+    #form{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    float: none;
+}
+</style>
+<div id="form">
+<section id="cover">
+    <div id="cover-caption">
+        <div id="container" class="container">
+            <div class="row">
+                <div class="col-sm-10 offset-sm-1 text-center" >
+                    <h1 class="display-3">CrunchCritic Login</h1>
+                    <div class="info-form">
+                        <form method="POST" action="{{ route('login') }}" class="justify-content-center" style="padding: 1% 20%">
+                            {{ csrf_field() }}
+                            <div class="form-group" style="margin: 1%">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="none@gmail.com">
                             </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                            <div class="form-group" style="margin: 1%">
+                                <input id="password" type="password" class="form-control" name="password" required placeholder="password">
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                            <button type="submit" class="btn btn-success" style="margin: 1%">Okay, go!</button>
+                        </form>
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>
     </div>
+</section>
+<!--
+    <div class="col-sm-10 form-group-lg">
+        <form class="form-group">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn btn-success active">
+                    <input type="radio" autocomplete="off" checked> Add question
+                </label>
+                <label class="btn btn-success">
+                    <input type="radio" name="options" id="inlineRadio1" value="openQuestionModule()"
+                           autocomplete="off">Question with a open answer </label>
+                <label class="btn btn-success">
+                    <input type="radio" name="options" id="inlineRadio2" value="singleQuestionModule()"
+                           autocomplete="off">
+                    Question with only one right answer
+                </label>
+            </div>
+        </form>
+        <button class="btn btn-outline-success" id="saveTestBtn" onclick="saveTest()" type="submit">
+            Save Test
+        </button>
+    </div>-->
 </div>
 @endsection

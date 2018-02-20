@@ -34,7 +34,8 @@ class SpecialtyController extends Controller
             // when validation is failed then return to  page back 
             return back()
                     ->withInput($request->input())
-                    ->withErrors($specialtyValidator->messages());
+                    ->withErrors($specialtyValidator->messages())
+                    ->with('type', 'add');
         }
         if ($specialtyValidator->passes()){ 
             // when it passed, add to DB

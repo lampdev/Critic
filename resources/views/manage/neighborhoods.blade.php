@@ -37,7 +37,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -58,7 +58,10 @@
 </div>
 <script>
   function ModalAddNeighborhood(){
-    $('#myModal').modal('show');
+    $('#myAddModal').modal('show');
+  }
+  function ModalEditNeighborhood(){
+    $('#myEditModal').modal('show');
   }
 </script>
 <!--End Modal-->
@@ -66,8 +69,24 @@
 <script>
   $(document).ready(function() {
     $('#table_id').DataTable( {
-      "scrollX": true
+      "scrollX": true,
+      columnDefs: [ {
+        targets: 1,
+        render: function ( data, type, row ) {
+          return data.substr( 0, 29 );
+        }
+      } ]
     } );
+    $(".form-group").click(function() {
+      $(this).removeClass('has-danger');
+    })
+    @if (count($errors) > 0)
+      @if (session('type') == 'add')
+      ModalAddNeighborhood();
+      @else
+      ModalEditNeighborhood();
+      @endif
+    @endif
   } );
 </script>
 

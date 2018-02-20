@@ -29,7 +29,7 @@
 </div>
 
 <!-- Modal window Add Specialty-->
-<div class="modal fade bd-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-modal-lg" id="myAddModal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<form method="post" action="add-specialty" class="modal-content"><!-- action -->
 			{{ csrf_field() }}
@@ -65,7 +65,10 @@
 <!--Modal window script-->
 <script>
 	function ModalAddSpecialty(){
-		$('#myModal').modal('show');
+		$('#myAddModal').modal('show');
+	}
+	function ModalEditSpecialty(){
+		$('#myEditModal').modal('show');
 	}
 </script>
 <!--End Modal-->
@@ -85,7 +88,11 @@
 			$(this).removeClass('has-danger');
 		})
 		@if (count($errors) > 0)
-		ModalAddSpecialty();
+			@if (session('type') == 'add')
+			ModalAddSpecialty();
+			@else
+			ModalEditSpecialty();
+			@endif
 		@endif
 	} );
 </script>

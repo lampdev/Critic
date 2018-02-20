@@ -34,7 +34,8 @@ class PaymentOptionsController extends Controller
             // when validation is failed then return to  page back 
             return back()
                     ->withInput($request->input())
-                    ->withErrors($paymentOptionValidator->messages());
+                    ->withErrors($paymentOptionValidator->messages())
+                    ->with('type', 'add');
         }
         if ($paymentOptionValidator->passes()){ 
             // when it passed, add to DB

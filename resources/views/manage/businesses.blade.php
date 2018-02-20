@@ -37,7 +37,7 @@
 </div>
 
 <!-- Modal window Add Business-->
-<div class="modal fade bd-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-modal-lg" id="myAddModal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<form method="post" action="add-business" class="modal-content"><!-- action -->
 			{{ csrf_field() }}
@@ -210,7 +210,10 @@
 <!--Modal window script-->
 <script>
 	function ModalAddBusiness(){
-		$('#myModal').modal('show');
+		$('#myAddModal').modal('show');
+	}
+	function ModalEditBusiness(){
+		$('#myEditModal').modal('show');
 	}
 </script>
 <!--End Modal-->
@@ -230,7 +233,11 @@
 			$(this).removeClass('has-danger');
 		})
 		@if (count($errors) > 0)
-		ModalAddBusiness();
+			@if (session('type') == 'add')
+			ModalAddBusiness();
+			@else
+			ModalEditBusiness();
+			@endif
 		@endif
 	} );
 </script>

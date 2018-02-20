@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Neighborhoods;
 use App\Businesses;
 use App\Http\Controllers\Controller;
@@ -18,8 +19,8 @@ class ManageController extends Controller
     {
         $neighborhoods = Neighborhoods::getAll();
         return view('manage.neighborhoods',[
-            'section'=>'neighborhoods',
-            'neighborhoods'=>$neighborhoods
+            'section' => 'neighborhoods',
+            'neighborhoods' => $neighborhoods
         ]);
     }
     public function businesses()
@@ -30,22 +31,20 @@ class ManageController extends Controller
             'businesses' => $businesses
         ]);
     }
-    public function addBusiness()
+    public function addBusiness(Request $request)
     {
-        // get form request
-        $businessRequest = &$_POST;
         // validate
         $businessValidator = Validator::make(
             array(
-                'business-name' => $businessRequest['business-name'],
-                'business-type' => $businessRequest['business-type'],
-                'business-description' => $businessRequest['business-description'],
-                'business-wto' => $businessRequest['business-wto'],
-                'business-wto-description' => $businessRequest['business-wto-description'],
-                'business-pricing' => $businessRequest['business-pricing'],
-                'business-website' => $businessRequest['business-website'],
-                'business-gluten-free' => $businessRequest['business-gluten-free'],
-                'business-gf-description' => $businessRequest['business-gf-description'],
+                'business-name' => $request->input('business-name'),
+                'business-type' => $request->input('business-type'),
+                'business-description' => $request->input('business-description'),
+                'business-wto' => $request->input('business-wto'),
+                'business-wto-description' => $request->input('business-wto-description'),
+                'business-pricing' => $request->input('business-pricing'),
+                'business-website' => $request->input('business-website'),
+                'business-gluten-free' => $request->input('business-gluten-free'),
+                'business-gf-description' => $request->input('business-gf-description'),
             ),
             array(
                 'business-name' => 'required|unique:businesses,name|max:255',
@@ -59,28 +58,26 @@ class ManageController extends Controller
                 'business-gf-description' => '',
             )
         );
-        
+
         if ($businessValidator->fails())
         {
-            //echo "Validation error\n";
-            //$messages = $businessValidator->messages();
-            ///$failed = $businessValidator->failed();
-            //dd($messages, $failed);
+            // when validation is failed then return to  page back 
             return back()
-                    ->withInput($businessRequest)
+                    ->withInput($request->input())
                     ->withErrors($businessValidator->messages());
         }
         if ($businessValidator->passes()){ 
+            // when it passed, add to DB
             Businesses::addOne(
-                $businessRequest['business-name'],
-                $businessRequest['business-type'],
-                $businessRequest['business-description'],
-                $businessRequest['business-wto'],
-                $businessRequest['business-wto-description'],
-                $businessRequest['business-pricing'],
-                $businessRequest['business-website'],
-                $businessRequest['business-gluten-free'],
-                $businessRequest['business-gf-description']
+                $request->input('business-name'),
+                $request->input('business-type'),
+                $request->input('business-description'),
+                $request->input('business-wto'),
+                $request->input('business-wto-description'),
+                $request->input('business-pricing'),
+                $request->input('business-website'),
+                $request->input('business-gluten-free'),
+                $request->input('business-gf-description')
             );
         }
         return redirect('manage/businesses');

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Businesses extends Model
 {
-    //get all visible business info for admin
+    //get all visible business info for DataTables
     public static function getAll()
     {
         return \DB::table('businesses')
@@ -19,7 +19,7 @@ class Businesses extends Model
     {
     	// add values to businesses table
         $date = new \DateTime();
-        \DB::table('businesses')->insertGetId([
+        $businessId = \DB::table('businesses')->insertGetId([
             'name' => $name,
             'type' => $type,
             'description' => $description,
@@ -31,18 +31,13 @@ class Businesses extends Model
             'created_user_id' => \Auth::user()->id,
             'updated_user_id' => \Auth::user()->id
         ]);
-        // preparing for adding values to business_parameter_value
-        $thisBusiness = \DB::table('businesses')
-            ->where('name', '=', $name)
-            ->where('created_at', '=', $date->format('Y-m-d H:i:s'))
-            ->first();
         // parameters for business_parameter_value
         $parameters =[null, $pricing, $website, $glutenFree, $gfDescription];
         // adding values to business_parameter_value table
         for($i = 1; $i <= 4; $i++)
         {
             \DB::table('business_parameter_value')->insertGetId([
-                'business_id' => $thisBusiness->id,
+                'business_id' => $businessId,
                 'parameter_id' => $i,
                 'value' => $parameters[$i],
                 'created_at' => $date->format('Y-m-d H:i:s'),

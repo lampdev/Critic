@@ -6,7 +6,6 @@
 @include('layouts.navbar')
 
 <div class="content" style="margin: 60px 10%">
-	<!-- Button trigger modal -->
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddBusiness()" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Business</button>
 	<table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
 		<thead>
@@ -37,7 +36,7 @@
 	</table>
 </div>
 
-<!-- Modal -->
+<!-- Modal window Add Business-->
 <div class="modal fade bd-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<form method="post" action="add-business" class="modal-content"><!-- action -->
@@ -126,41 +125,44 @@
 							@endif
 							
 								<label for="business-pricing" class="form-control-label">Pricing:</label>
+								@for($i=1;$i<=4;$i++)
+								@if($i%2 == 1)
 								<div class="row">
 									<div class="form-check" style="width: 20%; margin: 0 5%">
 										<label class="form-check-label">
-											<input type="radio" class="form-check-input" name="business-pricing" value="1" checked>
+											@if (old('business-pricing') == $i)
+											<input type="radio" class="form-check-input" name="business-pricing" value={{$i}} checked>
+											@else
+											<input type="radio" class="form-check-input" name="business-pricing" value={{$i}}>
+											@endif
+											@for($j=1;$j<=$i;$j++)
 											$
+											@endfor
 										</label>
 									</div>
+									@else
 									<div class="form-check" style="width: 20%; margin: 0 5%">
 										<label class="form-check-label">
-											<input type="radio" class="form-check-input" name="business-pricing" value="2">
-											$$
+											@if(old('business-pricing') == $i)
+											<input type="radio" class="form-check-input" name="business-pricing" value={{$i}} checked>
+											@else
+											<input type="radio" class="form-check-input" name="business-pricing" value={{$i}}>
+											@endif
+											@for($j=1;$j<=$i;$j++)
+											$
+											@endfor
 										</label>
 									</div>
 								</div>
-								<div class="row">
-									<div class="form-check" style="width: 20%; margin: 0 5%">
-										<label class="form-check-label">
-											<input type="radio" class="form-check-input" name="business-pricing" value="3">
-											$$$
-										</label>
-									</div>
-									<div class="form-check" style="width: 20%; margin: 0 5%">
-										<label class="form-check-label">
-											<input type="radio" class="form-check-input" name="business-pricing" value="4">
-											$$$$
-										</label>
-									</div>
-								</div>
+								@endif
+								@endfor
 							</fieldset>
 
 							@if ($errors->has('business-website'))
 							<div class="alert alert-danger" role="alert">
 							  <strong>Nope!</strong> {{ $errors->first('business-website', ':message') }}
 							</div>
-							<div class="form-group has-danger">	
+							<div class="form-group has-danger">
 							@else
 							<div class="form-group">	
 							@endif
@@ -170,8 +172,14 @@
 							<div class="form-group">
 								<div>
 									<label class="form-control-label">Gluten Free:</label>
+									@if(old('business-gluten-free') == "on")
+									<input type="hidden" name="business-gluten-free" value="off">
+									<input type="checkbox" name="business-gluten-free" value="on" checked>
+									@else
 									<input type="hidden" name="business-gluten-free" value="off">
 									<input type="checkbox" name="business-gluten-free" value="on">
+									@endif
+									
 								</div>
 							</div>
 
@@ -199,7 +207,7 @@
 		</form>
 	</div>
 </div>
-
+<!--Modal window script-->
 <script>
 	function ModalAddBusiness(){
 		$('#myModal').modal('show');
@@ -209,7 +217,6 @@
 
 <script>
 	$(document).ready(function() {
-
 		$('#table_id').DataTable( {
 			"scrollX": true,
 			columnDefs: [ {
@@ -222,7 +229,6 @@
 		$(".form-group").click(function() {
 			$(this).removeClass('has-danger');
 		})
-
 		@if (count($errors) > 0)
 		ModalAddBusiness();
 		@endif

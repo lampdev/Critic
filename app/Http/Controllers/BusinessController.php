@@ -2,28 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Neighborhoods;
 use App\Businesses;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ManageController extends Controller
+class BusinessController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function neighborhoods()
-    {
-        $neighborhoods = Neighborhoods::getAll();
-        return view('manage.neighborhoods',[
-            'section' => 'neighborhoods',
-            'neighborhoods' => $neighborhoods
-        ]);
-    }
-    public function businesses()
+    public function getPage()
     {
         $businesses = Businesses::getAll();
         return view('manage.businesses',[
@@ -82,23 +68,4 @@ class ManageController extends Controller
         }
         return redirect('manage/businesses');
     }
-    public function locations()
-    {
-        return view('manage.locations',[
-            'section' => 'locations'
-        ]);
-    }
-    public function specialties()
-    {
-        return view('manage.specialties',[
-            'section' => 'specialties'
-        ]);
-    }
-    public function paymentOptions()
-    {
-        return view('manage.payment_options',[
-            'section' => 'payment_options'
-        ]);
-    }
-
 }

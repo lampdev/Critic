@@ -20,9 +20,9 @@ Route::get('/', function (){
 	return redirect('/login');
 });
 // Manage View
-Route::get('/manage/neighborhoods','ManageController@neighborhoods')->middleware('auth');
-Route::get('/manage/businesses','ManageController@businesses')->middleware('auth');
-Route::get('/manage/locations','ManageController@locations')->middleware('auth');
+Route::get('/manage/neighborhoods','NeighborhoodController@getPage')->middleware('auth');
+Route::get('/manage/businesses','BusinessController@getPage')->middleware('auth');
+Route::get('/manage/locations','LocationController@getPage')->middleware('auth');
 Route::get('/manage/specialties','ManageController@specialties')->middleware('auth');
 Route::get('/manage/payment_option','ManageController@paymentOption')->middleware('auth');
 // Adding data

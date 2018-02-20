@@ -6,15 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Businesses extends Model
 {
-    //get all visible business info for DataTables
-    public static function getAll()
-    {
-        return \DB::table('businesses')
-            ->select('name', 'description', 'type', 'active')
-            ->get()
-            ->all();
-    }
-    // add one business
+    //connect to table
+    protected $table = 'businesses';
+    // add one business in Modal Window
     public static function addOne($name, $type, $description, $wto, $wtoDescription, $pricing, $website, $glutenFree, $gfDescription)
     {
     	// add values to businesses table

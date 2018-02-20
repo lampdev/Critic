@@ -23,8 +23,9 @@ Route::get('/', function (){
 Route::get('/manage/neighborhoods','NeighborhoodController@getPage')->middleware('auth');
 Route::get('/manage/businesses','BusinessController@getPage')->middleware('auth');
 Route::get('/manage/locations','LocationController@getPage')->middleware('auth');
-Route::get('/manage/specialties','ManageController@specialties')->middleware('auth');
-Route::get('/manage/payment_option','ManageController@paymentOption')->middleware('auth');
+Route::get('/manage/specialties','SpecialtyController@getPage')->middleware('auth');
+Route::get('/manage/payment_options','PaymentOptionsController@getPage')->middleware('auth');
 // Adding data
-Route::post('/manage/add-business','ManageController@addBusiness')->middleware('auth');
-
+Route::post('/manage/add-business','BusinessController@addBusiness')->middleware('auth');
+Route::post('/manage/add-paymentOption','PaymentOptionsController@addPaymentOption')->middleware('auth');
+Route::post('/manage/add-specialty','SpecialtyController@addSpecialty')->middleware('auth');

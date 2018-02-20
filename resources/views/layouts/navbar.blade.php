@@ -6,7 +6,7 @@
 	<li><a id="locations" href="/manage/locations">Locations</a></li>
 	<li><a id="specialties" href="/manage/specialties">Specialties</a></li>
 	<li><a id="payment_options" href="/manage/payment_options">Payment Options</a></li>
-	<li><a id="payment_options" href="/logout" style="">Logout</a></li>
+	<li><a id="logout" href="/logout" style="">Logout</a></li>
 </ul>
 
 <script type="text/javascript">

@@ -11,7 +11,7 @@ class BusinessController extends Controller
 {
     public function getPage()
     {
-        $businesses = Businesses::getAll();
+        $businesses = Businesses::all();
         return view('manage.businesses',[
             'section' => 'businesses',
             'businesses' => $businesses

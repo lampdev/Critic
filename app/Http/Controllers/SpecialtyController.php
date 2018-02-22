@@ -22,9 +22,11 @@ class SpecialtyController extends Controller
         // validate
         $specialtyValidator = Validator::make(
             array(
+                'row-id' => $request->input('row-id'),
                 'specialty-name' => $request->input('specialty-name'),
             ),
             array(
+                'row-id' => 'required|min:0|numeric',
                 'specialty-name' => 'required|unique:specialties,name|max:255',
             )
         );
@@ -38,8 +40,12 @@ class SpecialtyController extends Controller
                     ->with('type', 'add');
         }
         if ($specialtyValidator->passes()){ 
-            // when it passed, add to DB
-            Specialties::addOne($request->input('specialty-name'));
+            // when it passed, add/edit
+            if ($request->input('row-id') == 0) {
+                Specialties::addOne($request->input('specialty-name'));
+            } else {
+                Specialties::edit($request->input('row-id'), $request->input('specialty-name'));
+            }
         }
         return redirect('manage/specialties');
     }

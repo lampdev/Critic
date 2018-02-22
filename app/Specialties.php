@@ -25,4 +25,16 @@ class Specialties extends Model
             'updated_user_id' => \Auth::user()->id
         ]);
     }
+    public static function edit($id, $name)
+    {
+        // edit name in specialties table
+        $date = new \DateTime();
+        \DB::table('specialties')
+        ->where('id', '=', $id)
+        ->update([
+            'name' => $name, 
+            'updated_at' => $date->format('Y-m-d H:i:s'), 
+            'updated_user_id' => \Auth::user()->id
+        ]);
+    }
 }

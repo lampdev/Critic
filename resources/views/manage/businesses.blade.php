@@ -6,10 +6,11 @@
 @include('layouts.navbar')
 
 <div class="content" style="margin: 60px 10%">
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="ModalAddBusiness()" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Business</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal" onclick="ModalBusiness()" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Business</button>
 	<table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
 		<thead>
 			<tr>
+				<th>Id</th>
 				<th>Name</th>
 				<th>Description</th>
 				<th>Type</th>
@@ -23,10 +24,11 @@
 		<tbody>
 			@foreach ($businesses as $business)
 			<tr>
+				<td>{{ $business->id }}</td>
 				<td>{{ $business->name }}</td>
 				<td class="clip">{{ $business->description }}</td>
 				<td>{{ $business->type }}</td>
-				<td>Edit</td>
+				<td id="edit">Edit</td>
 				<td>View Locations</td>
 				<td>Manage Specialties</td>
 				<td>Active</td>
@@ -37,12 +39,12 @@
 </div>
 
 <!-- Modal window Add Business-->
-<div class="modal fade bd-modal-lg" id="myAddModal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-modal-lg" id="Modal" tabindex="-1" role="dialog" aria-labelledby="LargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<form method="post" action="add-business" class="modal-content"><!-- action -->
 			{{ csrf_field() }}
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add Business</h5>
+				<h5 class="modal-title" id="ModalLabel">Add Business</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -51,7 +53,7 @@
 				<div> 
 					<div class="row">
 						<div style="width:47%; margin: 0 1.5%">
-							
+							<input type="hidden" id="rowId" name="row-id" value="0">
 							@if ($errors->has('business-name'))
 							<div class="alert alert-danger" role="alert">
 							  <strong>Nope!</strong> {{ $errors->first('business-name', ':message') }}
@@ -207,39 +209,62 @@
 		</form>
 	</div>
 </div>
+<input id="errors-count" type="hidden" value="{{count($errors)}}">
+<input id="old-id" type="hidden" value="{{old('row-id')}}">
+
 <!--Modal window script-->
 <script>
-	function ModalAddBusiness(){
-		$('#myAddModal').modal('show');
-	}
-	function ModalEditBusiness(){
-		$('#myEditModal').modal('show');
+
+	function ModalBusiness(rowId){
+		$('#Modal').modal('show');
+		if (rowId > 0){
+			var modalLabel = "Edit Business";
+		} else {
+			var modalLabel = "Add Business";
+		}
+		document.getElementById("ModalLabel").innerHTML = modalLabel;
+		document.getElementById("rowId").value = rowId;
 	}
 </script>
-<!--End Modal-->
 
 <script>
+	// datatable 
 	$(document).ready(function() {
-		$('#table_id').DataTable( {
+		var table = $('#table_id').DataTable( {
 			"scrollX": true,
-			columnDefs: [ {
-				targets: 1,
+			"columnDefs": [ //hide id column
+			{
+				"targets": [ 0 ],
+				"visible": false,
+				"searchable": false
+			},
+			{
+				targets: [2],
 				render: function ( data, type, row ) {
 					return data.substr( 0, 29 );
 				}
-			} ]
-		} );
-		$(".form-group").click(function() {
-			$(this).removeClass('has-danger');
-		})
-		@if (count($errors) > 0)
-			@if (session('type') == 'add')
-			ModalAddBusiness();
-			@else
-			ModalEditBusiness();
-			@endif
-		@endif
-	} );
+			}
+			]
+		} )
+	//hide .danger when it clicked
+	$(".form-group").click(function() {
+		$(this).removeClass('has-danger');
+	})
+	// on click "Edit"
+	$('#table_id tbody').on('click', '#edit', function () {
+		//get row data
+		var data = table.row($(this).parents('tr')).data();
+		ModalBusiness(data[0]);
+	})
+    //if Modal Form returns errors 
+	if (document.getElementById("errors-count").value > 0){
+		var id = document.getElementById("old-id").value;
+		ModalBusiness(id);
+	}
+} );
+
+	
+
 </script>
 
 @endsection

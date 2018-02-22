@@ -22,24 +22,32 @@ class PaymentOptionsController extends Controller
         // validate
         $paymentOptionValidator = Validator::make(
             array(
+                'row-id' => $request->input('row-id'),
                 'payment-option-name' => $request->input('payment-option-name'),
             ),
             array(
+            	'row-id' => 'required|min:0|numeric',
                 'payment-option-name' => 'required|unique:payment_options,name|max:255',
             )
         );
-
+		
+		// when validation is failed then return to  page back 
         if ($paymentOptionValidator->fails())
         {
-            // when validation is failed then return to  page back 
             return back()
                     ->withInput($request->input())
-                    ->withErrors($paymentOptionValidator->messages())
-                    ->with('type', 'add');
+                    ->withErrors($paymentOptionValidator->messages());
         }
-        if ($paymentOptionValidator->passes()){ 
-            // when it passed, add to DB
-            PaymentOptions::addOne($request->input('payment-option-name'));
+
+        // when it passed than Add/Edit
+        if ($paymentOptionValidator->passes()) { 
+            
+            if ($request->input('row-id') == 0) {
+            	PaymentOptions::addOne($request->input('payment-option-name'));
+            } else {
+                PaymentOptions::edit($request->input('row-id'), $request->input('payment-option-name'));
+            }
+
         }
         return redirect('manage/payment_options');
     }

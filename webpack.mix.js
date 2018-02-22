@@ -1,4 +1,5 @@
-const { mix } = require('laravel-mix');
+let mix = require('laravel-mix');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -9,9 +10,17 @@ const { mix } = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix .js('resources/assets/js/app.js', 'public/js')
-	.js('node_modules/bootstrap/dist/js/bootstrap.js', 'public/js')
-	.sass('resources/assets/sass/app.scss', 'public/css');
 
-
-
+mix.autoload({
+    jquery: ['$', 'window.jQuery', 'jQuery'],
+    tether: ['window.Tether', 'Tether'],
+    'tether-shepherd': ['Shepherd'],
+    'popper.js/dist/popper.js': ['Popper']
+})
+    .js('resources/assets/js/app.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .options({
+        postCss: [
+            require('precss')()
+        ]
+    });

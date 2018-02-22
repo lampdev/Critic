@@ -22,6 +22,7 @@ class BusinessController extends Controller
         // validate
         $businessValidator = Validator::make(
             array(
+                'row-id' => $request->input('row-id'),
                 'business-name' => $request->input('business-name'),
                 'business-type' => $request->input('business-type'),
                 'business-description' => $request->input('business-description'),
@@ -33,6 +34,7 @@ class BusinessController extends Controller
                 'business-gf-description' => $request->input('business-gf-description'),
             ),
             array(
+                'row-id' => 'required|min:0|numeric',
                 'business-name' => 'required|unique:businesses,name|max:255',
                 'business-type' => 'required',
                 'business-description' => 'required',
@@ -54,18 +56,34 @@ class BusinessController extends Controller
                     ->with('type', 'add');
         }
         if ($businessValidator->passes()){ 
-            // when it passed, add to DB
-            Businesses::addOne(
-                $request->input('business-name'),
-                $request->input('business-type'),
-                $request->input('business-description'),
-                $request->input('business-wto'),
-                $request->input('business-wto-description'),
-                $request->input('business-pricing'),
-                $request->input('business-website'),
-                $request->input('business-gluten-free'),
-                $request->input('business-gf-description')
-            );
+            // when it passed, add/edit 
+            if ($request->input('row-id') == 0) {
+                Businesses::addOne(
+                    $request->input('business-name'),
+                    $request->input('business-type'),
+                    $request->input('business-description'),
+                    $request->input('business-wto'),
+                    $request->input('business-wto-description'),
+                    $request->input('business-pricing'),
+                    $request->input('business-website'),
+                    $request->input('business-gluten-free'),
+                    $request->input('business-gf-description')
+                );
+            } else {
+                Businesses::edit(
+                    $request->input('row-id'),
+                    $request->input('business-name'),
+                    $request->input('business-type'),
+                    $request->input('business-description'),
+                    $request->input('business-wto'),
+                    $request->input('business-wto-description'),
+                    $request->input('business-pricing'),
+                    $request->input('business-website'),
+                    $request->input('business-gluten-free'),
+                    $request->input('business-gf-description')
+                );
+            }
+            
         }
         return redirect('manage/businesses');
     }

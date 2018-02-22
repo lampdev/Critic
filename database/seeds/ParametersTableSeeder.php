@@ -13,7 +13,7 @@ class ParametersTableSeeder extends Seeder
     {
         DB::table('parameters')->insert([
             'id' => 1,
-            'name' => 'pricing',
+            'name' => 'business-pricing',
             'type' => 'integer',
             'created_at' => '2018-02-15 15:56:10',
             'updated_at' => '2018-02-15 15:56:10',
@@ -23,7 +23,7 @@ class ParametersTableSeeder extends Seeder
         ]);
         DB::table('parameters')->insert([
             'id' => 2,
-            'name' => 'website',
+            'name' => 'business-website',
             'type' => 'string',
             'created_at' => '2018-02-15 15:56:10',
             'updated_at' => '2018-02-15 15:56:10',
@@ -33,7 +33,7 @@ class ParametersTableSeeder extends Seeder
         ]);
         DB::table('parameters')->insert([
             'id' => 3,
-            'name' => 'gluten free',
+            'name' => 'business-gluten-free',
             'type' => 'bool',
             'created_at' => '2018-02-15 15:56:10',
             'updated_at' => '2018-02-15 15:56:10',
@@ -43,7 +43,7 @@ class ParametersTableSeeder extends Seeder
         ]);
         DB::table('parameters')->insert([
             'id' => 4,
-            'name' => 'gluten free descriprion',
+            'name' => 'business-gf-description',
             'type' => 'string',
             'created_at' => '2018-02-15 15:56:10',
             'updated_at' => '2018-02-15 15:56:10',

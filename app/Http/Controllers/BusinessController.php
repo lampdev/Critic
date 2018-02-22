@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Businesses;
+use App\Parameters;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,6 +17,16 @@ class BusinessController extends Controller
             'section' => 'businesses',
             'businesses' => $businesses
         ]);
+    }
+    public static function createParametersArray($request){
+        $DBParameters = Parameters::select('id', 'name')->get()->toArray();
+        foreach($DBParameters as $id => $row)
+        foreach($request as $name => $value)
+        {
+            if ($row['name'] == $name) 
+                $arr[$row['id']] = $value;
+        }
+        return $arr;
     }
     public function addBusiness(Request $request)
     {
@@ -51,11 +62,13 @@ class BusinessController extends Controller
         {
             // when validation is failed then return to  page back 
             return back()
-                    ->withInput($request->input())
-                    ->withErrors($businessValidator->messages())
-                    ->with('type', 'add');
+                ->withInput($request->input())
+                ->withErrors($businessValidator->messages())
+                ->with('type', 'add');
         }
         if ($businessValidator->passes()){ 
+            //create parameters array
+            $businessParameters = $this->createParametersArray($request->input());
             // when it passed, add/edit 
             if ($request->input('row-id') == 0) {
                 Businesses::addOne(
@@ -64,10 +77,7 @@ class BusinessController extends Controller
                     $request->input('business-description'),
                     $request->input('business-wto'),
                     $request->input('business-wto-description'),
-                    $request->input('business-pricing'),
-                    $request->input('business-website'),
-                    $request->input('business-gluten-free'),
-                    $request->input('business-gf-description')
+                    $businessParameters
                 );
             } else {
                 Businesses::edit(
@@ -77,10 +87,7 @@ class BusinessController extends Controller
                     $request->input('business-description'),
                     $request->input('business-wto'),
                     $request->input('business-wto-description'),
-                    $request->input('business-pricing'),
-                    $request->input('business-website'),
-                    $request->input('business-gluten-free'),
-                    $request->input('business-gf-description')
+                    $businessParameters
                 );
             }
             

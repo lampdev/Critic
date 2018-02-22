@@ -9,7 +9,7 @@ class Businesses extends Model
     //connect to table
     protected $table = 'businesses';
     // add one business in Modal Window
-    public static function addOne($name, $type, $description, $wto, $wtoDescription, $pricing, $website, $glutenFree, $gfDescription)
+    public static function addOne($name, $type, $description, $wto, $wtoDescription, $parameters)
     {
     	// add values to businesses table
         $date = new \DateTime();
@@ -26,13 +26,12 @@ class Businesses extends Model
             'updated_user_id' => \Auth::user()->id
         ]);
         // add values for business_parameter_value table
-        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $id_from_zero => $parameter) 
+        foreach ($parameters as $parameter_id => $parameter_value)  
         {
-            $parameter_id = $id_from_zero + 1;
             \DB::table('business_parameter_value')->insertGetId([
                 'business_id' => $businessId,
                 'parameter_id' => $parameter_id,
-                'value' => $parameter,
+                'value' => $parameter_value,
                 'created_at' => $date->format('Y-m-d H:i:s'),
                 'updated_at' => $date->format('Y-m-d H:i:s'),
                 'active' => 1,
@@ -41,32 +40,32 @@ class Businesses extends Model
             ]);
         }
     }
-    public static function edit($id, $name, $type, $description, $wto, $wtoDescription, $pricing, $website, $glutenFree, $gfDescription)
+    public static function edit($id, $name, $type, $description, $wto, $wtoDescription, $parameters)
     {
         // edit for businesses table
+        dd($parameters);
         $date = new \DateTime();
-        $businessId = \DB::table('businesses')
-        ->where('id', '=', $id)
-        ->update([
-            'name' => $name,
-            'type' => $type,
-            'description' => $description,
-            'what_to_order' => $wto,
-            'what_to_order_description' => $wtoDescription,
-            'updated_at' => $date->format('Y-m-d H:i:s'),
-            'active' => 0,
-            'updated_user_id' => \Auth::user()->id
-        ]);
+        \DB::table('businesses')
+            ->where('id', '=', $id)
+            ->update([
+                'name' => $name,
+                'type' => $type,
+                'description' => $description,
+                'what_to_order' => $wto,
+                'what_to_order_description' => $wtoDescription,
+                'updated_at' => $date->format('Y-m-d H:i:s'),
+                'active' => 0,
+                'updated_user_id' => \Auth::user()->id
+            ]
+        );
         // edit values for business_parameter_value table
-        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $id_from_zero => $parameter) 
+        foreach ($parameters as $parameter_id => $parameter_value) 
         {
-            $parameter_id = $id_from_zero + 1;
             $businessId = \DB::table('business_parameter_value')
-                ->where('id', '=', $id)
+                ->where('business_id', '=', $id)
+                ->where('parameter_id', '=', $parameter_id)
                 ->update([
-                    'business_id' => $businessId,
-                    'parameter_id' => $parameter_id,
-                    'value' => $parameter,
+                    'value' => $parameter_value,
                     'updated_at' => $date->format('Y-m-d H:i:s'),
                     'active' => 1,
                     'updated_user_id' => \Auth::user()->id

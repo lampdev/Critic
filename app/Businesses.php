@@ -26,8 +26,9 @@ class Businesses extends Model
             'updated_user_id' => \Auth::user()->id
         ]);
         // add values for business_parameter_value table
-        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $parameter_id => $parameter) 
+        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $id_from_zero => $parameter) 
         {
+            $parameter_id = $id_from_zero + 1;
             \DB::table('business_parameter_value')->insertGetId([
                 'business_id' => $businessId,
                 'parameter_id' => $parameter_id,
@@ -57,8 +58,9 @@ class Businesses extends Model
             'updated_user_id' => \Auth::user()->id
         ]);
         // edit values for business_parameter_value table
-        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $parameter_id => $parameter) 
+        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $id_from_zero => $parameter) 
         {
+            $parameter_id = $id_from_zero + 1;
             $businessId = \DB::table('business_parameter_value')
                 ->where('id', '=', $id)
                 ->update([

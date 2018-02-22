@@ -25,15 +25,13 @@ class Businesses extends Model
             'created_user_id' => \Auth::user()->id,
             'updated_user_id' => \Auth::user()->id
         ]);
-        // parameters for business_parameter_value
-        $parameters =[null, $pricing, $website, $glutenFree, $gfDescription];
-        // adding values to business_parameter_value table
-        for($i = 1; $i <= 4; $i++)
+        // add values for business_parameter_value table
+        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $parameter_id => $parameter) 
         {
             \DB::table('business_parameter_value')->insertGetId([
                 'business_id' => $businessId,
-                'parameter_id' => $i,
-                'value' => $parameters[$i],
+                'parameter_id' => $parameter_id,
+                'value' => $parameter,
                 'created_at' => $date->format('Y-m-d H:i:s'),
                 'updated_at' => $date->format('Y-m-d H:i:s'),
                 'active' => 1,
@@ -44,7 +42,7 @@ class Businesses extends Model
     }
     public static function edit($id, $name, $type, $description, $wto, $wtoDescription, $pricing, $website, $glutenFree, $gfDescription)
     {
-        // edit in businesses table
+        // edit for businesses table
         $date = new \DateTime();
         $businessId = \DB::table('businesses')
         ->where('id', '=', $id)
@@ -58,17 +56,15 @@ class Businesses extends Model
             'active' => 0,
             'updated_user_id' => \Auth::user()->id
         ]);
-        // parameters for business_parameter_value
-        $parameters =[null, $pricing, $website, $glutenFree, $gfDescription];
-        // edit values to business_parameter_value table
-        for($i = 1; $i <= 4; $i++)
+        // edit values for business_parameter_value table
+        foreach ([$pricing, $website, $glutenFree, $gfDescription] as $parameter_id => $parameter) 
         {
             $businessId = \DB::table('business_parameter_value')
                 ->where('id', '=', $id)
                 ->update([
                     'business_id' => $businessId,
-                    'parameter_id' => $i,
-                    'value' => $parameters[$i],
+                    'parameter_id' => $parameter_id,
+                    'value' => $parameter,
                     'updated_at' => $date->format('Y-m-d H:i:s'),
                     'active' => 1,
                     'updated_user_id' => \Auth::user()->id

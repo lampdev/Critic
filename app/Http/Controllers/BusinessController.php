@@ -43,7 +43,7 @@ class BusinessController extends Controller
                 'business-pricing' => 'required|min:1|max:4',
                 'business-website' => 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|unique:business_parameter_value,value',
                 'business-gluten-free' => 'in:on,off',
-                'business-gf-description' => '',
+                'business-gf-description' => 'required',
             )
         );
 

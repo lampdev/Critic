@@ -6,7 +6,7 @@
 @include('layouts.navbar')
 
 <div class="content" style="margin: 60px 10%">
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal" onclick="ModalBusiness()" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Business</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal" onclick="ModalBusiness(0)" style="padding: 2px 20px; margin: 0 0 1.5% 0;">Add Business</button>
 	<table id="table_id" class="table table-striped table-bordered " cellspacing="0" width="100%" >
 		<thead>
 			<tr>

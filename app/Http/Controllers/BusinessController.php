@@ -71,7 +71,7 @@ class BusinessController extends Controller
             $businessParameters = $this->createParametersArray($request->input());
             // when it passed, add/edit 
             if ($request->input('row-id') == 0) {
-                Businesses::addOne(
+                Businesses::add(
                     $request->input('business-name'),
                     $request->input('business-type'),
                     $request->input('business-description'),

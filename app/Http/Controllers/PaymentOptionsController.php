@@ -43,7 +43,7 @@ class PaymentOptionsController extends Controller
         if ($paymentOptionValidator->passes()) { 
             
             if ($request->input('row-id') == 0) {
-            	PaymentOptions::addOne($request->input('payment-option-name'));
+            	PaymentOptions::add($request->input('payment-option-name'));
             } else {
                 PaymentOptions::edit($request->input('row-id'), $request->input('payment-option-name'));
             }

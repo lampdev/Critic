@@ -9,7 +9,7 @@ class Businesses extends Model
     //connect to table
     protected $table = 'businesses';
     // add one business in Modal Window
-    public static function addOne($name, $type, $description, $wto, $wtoDescription, $parameters)
+    public static function add($name, $type, $description, $wto, $wtoDescription, $parameters)
     {
     	// add values to businesses table
         $date = new \DateTime();

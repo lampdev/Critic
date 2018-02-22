@@ -42,7 +42,7 @@ class SpecialtyController extends Controller
         if ($specialtyValidator->passes()){ 
             // when it passed, add/edit
             if ($request->input('row-id') == 0) {
-                Specialties::addOne($request->input('specialty-name'));
+                Specialties::add($request->input('specialty-name'));
             } else {
                 Specialties::edit($request->input('row-id'), $request->input('specialty-name'));
             }

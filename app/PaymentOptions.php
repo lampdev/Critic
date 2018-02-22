@@ -12,7 +12,7 @@ class PaymentOptions extends Model
      * @var string
      */
     protected $table = 'payment_options';
-    public static function addOne($name)
+    public static function add($name)
     {
         // add values to payment_options table
         $date = new \DateTime();

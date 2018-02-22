@@ -12,7 +12,7 @@ class Specialties extends Model
      * @var string
      */
     protected $table = 'specialties';
-    public static function addOne($name)
+    public static function add($name)
     {
     	// add values to specialties table
         $date = new \DateTime();
